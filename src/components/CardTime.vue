@@ -62,56 +62,15 @@ export default {
   },
   mounted() {
     setTimeout(() => {
-      this.times = [
-        {
-          nome: 'Internacional',
-          jogadores: ["Andrés D'Alessandro", 'Alan Patrick', 'Enner Valencia', 'Vitão'],
-          corPrimaria: 'lightcoral',
-          corSecundaria: 'red',
-        },
-        {
-          nome: 'Grêmio',
-          jogadores: ['Luis Suárez', 'Cristaldo', 'Geromel', 'Kannemann'],
-          corPrimaria: 'lightblue',
-          corSecundaria: 'blue',
-        },
-        {
-          nome: 'Flamengo',
-          jogadores: ['Gabigol', 'Arrascaeta', 'Everton Ribeiro', 'Bruno Henrique'],
-          corPrimaria: 'crimson',
-          corSecundaria: 'black',
-        },
-        {
-          nome: 'Palmeiras',
-          jogadores: ['Endrick', 'Raphael Veiga', 'Gustavo Gómez', 'Murilo'],
-          corPrimaria: 'lightgreen',
-          corSecundaria: 'darkgreen',
-        },
-        {
-          nome: 'Corinthians',
-          jogadores: ['Cássio', 'Renato Augusto', 'Fagner', 'Yuri Alberto'],
-          corPrimaria: 'white',
-          corSecundaria: 'black',
-        },
-        {
-          nome: 'São Paulo',
-          jogadores: ['Calleri', 'Luciano', 'Rafael', 'Rodrigo Nestor'],
-          corPrimaria: 'lightgray',
-          corSecundaria: 'red',
-        },
-        {
-          nome: 'Atlético Mineiro',
-          jogadores: ['Hulk', 'Paulinho', 'Everson', 'Arana'],
-          corPrimaria: 'silver',
-          corSecundaria: 'black',
-        },
-      ]
-
-      const raw = this.$route.query.data
-      if (raw) {
-        const temp = JSON.parse(raw)
-        this.times.push(temp)
-      }
+      this.$axios
+        .get('http://localhost:3000/times')
+        .then((response) => {
+          this.times = response.data
+        })
+        .catch((error) => {
+          console.error('Erro ao buscar times, verifique se a API está no ar. Erro:', error)
+          this.times = []
+        })
     }, 500)
   },
   methods: {

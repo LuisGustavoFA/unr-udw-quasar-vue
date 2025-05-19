@@ -87,14 +87,15 @@ export default {
         corSecundaria: this.corSecundaria,
       }
 
-      console.log(temp)
-
-      this.$router.push({
-        path: '/',
-        query: {
-          data: JSON.stringify(temp),
-        },
-      })
+      this.$axios
+        .post('http://localhost:3000/times', temp)
+        .then((response) => {
+          console.log(response)
+          this.$router.push('/')
+        })
+        .catch((error) => {
+          console.error('Erro ao adicionar time, verifique se a API está no ar. Erro:', error)
+        })
     },
   },
 }
