@@ -4,7 +4,9 @@
       <q-toolbar>
         <q-btn dense flat round icon="menu" @click="toggleLeftDrawer" />
 
-        <q-toolbar-title> O Brasileirasso </q-toolbar-title>
+        <q-toolbar-title>
+          <a @click="toHomePage" style="cursor: pointer"> O Brasileirasso </a>
+        </q-toolbar-title>
       </q-toolbar>
     </q-header>
 
@@ -62,6 +64,12 @@ export default {
     return {
       linksList,
     }
+  },
+
+  methods: {
+    toHomePage() {
+      this.$router.push('/')
+    },
   },
 }
 </script>
