@@ -1,101 +1,71 @@
 <template>
-  <div class="q-pa-md" style="min-width: 360px">
-    <q-form @submit="onSubmit" class="q-gutter-md">
-      <q-input
-        filled
-        v-model="name"
-        label="Nome do Time *"
-        :rules="[(val) => !!val || 'O nome é obrigatório']"
-      />
-
-      <q-input
-        filled
-        type="number"
-        v-model.number="numJogadores"
-        label="Número de Jogadores *"
-        :rules="[
-          (val) => !!val || 'Número obrigratório',
-          (val) => val <= 4 || 'Máximo de 4 jogadores',
-        ]"
-      />
-
-      <q-input
-        v-for="jog in Math.min(numJogadores, 4)"
-        v-bind:key="jog"
-        filled
-        v-model="nameJogadores[jog - 1]"
-        label="Nome do jogador *"
-        :rules="[(val) => !!val || 'O nome é obrigatório']"
-      />
-
-      <q-input
-        filled
-        v-model="corPrimaria"
-        label="Cor Primária *"
-        :rules="[(val) => !!val || 'A cor é obrigatória']"
-      >
-        <template v-slot:append>
-          <q-icon name="colorize" class="cursor-pointer">
-            <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-              <q-color v-model="corPrimaria" />
-            </q-popup-proxy>
-          </q-icon>
-        </template>
-      </q-input>
-
-      <q-input
-        filled
-        v-model="corSecundaria"
-        label="Cor Secundária *"
-        :rules="[(val) => !!val || 'A cor é obrigatória']"
-      >
-        <template v-slot:append>
-          <q-icon name="colorize" class="cursor-pointer">
-            <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-              <q-color v-model="corSecundaria" />
-            </q-popup-proxy>
-          </q-icon>
-        </template>
-      </q-input>
-
-      <div>
-        <q-btn label="Adicionar" type="submit" color="primary" />
-        <q-btn label="Cancelar" to="/" color="primary" flat class="q-ml-sm" />
-      </div>
-    </q-form>
-  </div>
+  <q-card>
+    <q-card-section>
+  <q-input outlined label="Nome" v-model="time.nome" />
+  <q-select outlined v-model="time.fed" :options="fedOptions" label="Federação"/>
+  <q-select outlined multiple v-model="time.cat" :options="catOptions" label="Categorias"/>
+    </q-card-section>
+    <q-card-actions align="right">
+      <q-btn label="Cancelar" outline color="primary" to="/"></q-btn>
+      <q-btn label="Salvar" :disabled="timeIncompleto()" color="primary" @click="onSalvar">
+        <q-tooltip>
+          {{ tooltipSalvar }}
+        </q-tooltip>
+      </q-btn>
+    </q-card-actions>
+  </q-card>
 </template>
 
 <script>
+import { Notify } from 'quasar';
 export default {
+  emits: ["salvar", "cancelar"],
   data() {
     return {
-      name: '',
-      numJogadores: '',
-      nameJogadores: [],
-      corPrimaria: '',
-      corSecundaria: '',
+      time: {
+        id: null,
+        nome: "",
+        fed: "",
+        cat: [],
+      },
+      tooltipSalvar: "",
+      fedOptions: ["FGF", "FERJ", "FRS"],
+      catOptions: ["sub-15", "sub-17", "sub-20"],
     }
   },
 
   methods: {
-    onSubmit() {
-      var temp = {
-        nome: this.name,
-        jogadores: this.nameJogadores,
-        corPrimaria: this.corPrimaria,
-        corSecundaria: this.corSecundaria,
+    cancelar() {
+      this.$emit('cancelar');
+    },
+    onSalvar() {
+      if (this.time.nome.length < 3) {
+        Notify.create("Nome tem que ter no mínimo 3 caracteres.")
+        return;
+      };
+      this.$emit('salvar', this.time);
+    },
+    timeIncompleto() {
+      this.tooltipSalvar = "";
+      if (this.time.nome.length < 3) {
+        this.tooltipSalvar += "O nome do Time tem que ter no mínimo 3 caracteres"
       }
-
-      this.$axios
-        .post('http://localhost:3000/times', temp)
-        .then((response) => {
-          console.log(response)
-          this.$router.push('/')
-        })
-        .catch((error) => {
-          console.error('Erro ao adicionar time, verifique se a API está no ar. Erro:', error)
-        })
+      if (this.time.fed == "") {
+        if (this.tooltipSalvar != "") {
+          this.tooltipSalvar += ", ";
+        }
+        this.tooltipSalvar += "Time precisa ter uma federação"
+      }
+      if (this.time.cat.length == 0) {
+        if (this.tooltipSalvar != "") {
+          this.tooltipSalvar += ", ";
+        }
+        this.tooltipSalvar += "Time precisa ter uma categoria"
+      }
+      if (this.tooltipSalvar == "") {
+        this.tooltipSalvar = "Salvar time"
+      }
+      return this.time.nome.length < 3 || this.time.fed == "" || this.time.cat.length == 0;
     },
   },
 }
