@@ -1,15 +1,15 @@
 <template>
   <q-page class="flex flex-center">
-    <CardAddTime />
+    <FormTime />
   </q-page>
 </template>
 
 <script>
 import { defineComponent } from 'vue'
-import CardAddTime from 'src/components/CardAddTime.vue'
+import FormTime from 'src/components/FormTime.vue';
 
 export default defineComponent({
   name: 'IndexPage',
-  components: { CardAddTime },
+  components: { FormTime },
 })
 </script>

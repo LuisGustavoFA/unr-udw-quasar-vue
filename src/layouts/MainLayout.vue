@@ -14,7 +14,7 @@
       <q-list>
         <q-item-label header> Links Essenciais </q-item-label>
 
-        <EssentialLink v-for="link in linksList" :key="link.title" v-bind="link" />
+        <EssentialLink v-for="route in linksList" :key="route.title" v-bind="route" />
       </q-list>
     </q-drawer>
 
@@ -31,17 +31,17 @@ import EssentialLink from 'components/EssentialLink.vue'
 
 const linksList = [
   {
-    title: 'Github Pessoal',
-    caption: 'github.com/LuisGustavoFA',
-    icon: 'person',
-    link: 'https://github.com/LuisGustavoFA',
+    title: 'Ver Times',
+    caption: 'Visualizar todos os times',
+    icon: 'sports_soccer',
+    route: "/"
   },
   {
-    title: 'Github do Projeto',
-    caption: 'github.com/LuisGustavoFA/unr-udw-quasar-vue',
-    icon: 'code',
-    link: 'https://github.com/LuisGustavoFA/unr-udw-quasar-vue',
-  },
+    title: 'Novo Time',
+    caption: 'Adicionar novo time',
+    icon: 'add',
+    route: "/adicionar-time"
+  }
 ]
 
 export default {

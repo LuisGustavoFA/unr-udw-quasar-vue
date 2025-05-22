@@ -60,7 +60,7 @@
 
       <div>
         <q-btn label="Adicionar" type="submit" color="primary" />
-        <q-btn label="Limpar" type="reset" color="primary" flat class="q-ml-sm" />
+        <q-btn label="Cancelar" to="/" color="primary" flat class="q-ml-sm" />
       </div>
     </q-form>
   </div>

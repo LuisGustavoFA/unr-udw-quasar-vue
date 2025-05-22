@@ -71,7 +71,7 @@ export default {
           console.error('Erro ao buscar times, verifique se a API está no ar. Erro:', error)
           this.times = []
         })
-    }, 500)
+    }, 1000)
   },
   methods: {
     addTime() {
@@ -108,5 +108,6 @@ export default {
 .carregado {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
 }
 </style>
