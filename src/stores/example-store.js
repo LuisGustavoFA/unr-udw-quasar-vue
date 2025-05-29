@@ -1,8 +1,10 @@
 import { defineStore, acceptHMRUpdate } from 'pinia'
 
-export const useCounterStore = defineStore('counter', {
+const useStore = defineStore('appStore', {
   state: () => ({
-    counter: 0
+    counter: 0,
+    dado: 'dado inicial',
+    user: 'usuario inicial'
   }),
 
   getters: {
@@ -12,10 +14,21 @@ export const useCounterStore = defineStore('counter', {
   actions: {
     increment() {
       this.counter++
+    },
+    setUser(user) {
+      this.user = user;
+      sessionStorage.setItem("user", JSON.stringify(user));
     }
   }
 })
 
 if (import.meta.hot) {
-  import.meta.hot.accept(acceptHMRUpdate(useCounterStore, import.meta.hot))
+  import.meta.hot.accept(acceptHMRUpdate(useStore, import.meta.hot))
 }
+
+const appStore = useStore();
+let tempUser = sessionStorage.getItem('user')
+if (tempUser) {
+  appStore.user = JSON.parse(tempUser);
+}
+export {appStore};

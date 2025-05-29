@@ -20,15 +20,6 @@
         /></span>
       </q-card-section>
     </q-card>
-
-    <q-card class="q-pa-lg meuCard addCard" @click="addTime">
-      <span class="text-h4">
-        Adicionar Time
-        <q-separator style="background-color: black" />
-        <q-icon class="addCard_icon" name="sports_soccer" />
-        <q-icon class="addCard_icon" name="add" />
-      </span>
-    </q-card>
   </div>
 
   <div v-if="times == null">
@@ -62,21 +53,14 @@ export default {
   },
   mounted() {
     setTimeout(() => {
-      this.$axios
-        .get('http://localhost:3000/times')
-        .then((response) => {
-          this.times = response.data
-        })
-        .catch((error) => {
-          console.error('Erro ao buscar times, verifique se a API está no ar. Erro:', error)
-          this.times = []
-        })
+      this.times = [{
+        id: 1,
+        nome: 'Internacional',
+        jogadores: ["Andrés D'Alessandro", 'Alan Patrick', 'Enner Valencia', 'Vitão'],
+        corPrimaria: 'lightcoral',
+        corSecundaria: 'red',
+      },]
     }, 1000)
-  },
-  methods: {
-    addTime() {
-      this.$router.push('/adicionar-time')
-    },
   },
 }
 </script>
